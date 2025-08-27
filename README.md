@@ -2,6 +2,10 @@
 This smart chatbot provides accurate answers, writes code in various programming languages, and assists in building mini applications efficiently.
 
 ---
+note:
+   1   .env file is not here create it and and place GEMINI_API_KEY.
+   2   create your own environment and apply this project.
+
 
 Features:
 
