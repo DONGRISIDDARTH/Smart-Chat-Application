@@ -18,15 +18,16 @@ Features:
 
 Project Structure:
 
-chatbot_flask/
+Smart Chat Application/
 │
 ├── app.py               # Flask backend
 ├── templates/
-│   └── index.html       # Frontend HTML
+│   └── index.html       # Frontend HTML file
 ├── static/
-│   └── style.css        # CSS styling
-├── .env                 # Store Gemini API key (i changed my key create your own key and use it)
-└── README.txt           # Project documentation
+│   └── style.css        # CSS styling for the app
+├── .env                 # Environment file to store your Gemini API key
+├── README.md            # Project documentation (this file)
+
 
 ---
 
