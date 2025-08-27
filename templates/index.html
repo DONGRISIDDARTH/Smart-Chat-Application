@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Chat Application</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
+    <!-- Marked.js for Markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- Highlight.js for syntax highlighting -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+</head>
+<body>
+    <div class="chat-container">
+        <h1 align = "center">Chat Application</h1>
+        <div id="chat-box"></div>
+        <input type="text" id="user-input" placeholder="Type your message..." autofocus>
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+        async function sendMessage() {
+            const inputBox = document.getElementById("user-input");
+            const chatBox = document.getElementById("chat-box");
+            const query = inputBox.value;
+            if (!query) return;
+
+            // Display user's message
+            const userMsg = document.createElement("div");
+            userMsg.className = "user-message";
+            userMsg.textContent = "You: " + query;
+            chatBox.appendChild(userMsg);
+            chatBox.scrollTop = chatBox.scrollHeight;
+            inputBox.value = "";
+
+            // Send request to backend
+            const response = await fetch("/ask", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ query })
+            });
+
+            const data = await response.json();
+
+            // Display Gemini's response with Markdown rendering
+            const botMsg = document.createElement("div");
+            botMsg.className = "bot-message";
+            botMsg.innerHTML = "Gemini:<br>" + marked.parse(data.response);
+            chatBox.appendChild(botMsg);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // Apply syntax highlighting to code blocks
+            chatBox.querySelectorAll("pre code").forEach(block => {
+                hljs.highlightElement(block);
+            });
+        }
+    </script>
+</body>
+</html>
