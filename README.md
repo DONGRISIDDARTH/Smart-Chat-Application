@@ -40,7 +40,7 @@ Setup Instructions:
 
 2. Install dependencies:
 
-   pip install flask python-dotenv google-generativeai
+   pip install flask python-dotenv google-generativeai langchain langchain-google-genai
 
 3. Configure API Key:
 
