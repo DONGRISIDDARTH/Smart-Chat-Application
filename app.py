@@ -1,14 +1,21 @@
+
 import os
 from flask import Flask, render_template, request, jsonify
 from dotenv import load_dotenv
-import google.generativeai as genai
+import getpass
+from langchain.chat_models import init_chat_model
 
 # Load API key
 load_dotenv()
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+if not os.environ.get("GOOGLE_API_KEY"):
+    os.environ["GOOGLE_API_KEY"] = getpass.getpass("Enter API key for Google Gemini: ")
 
-# Initialize the model
-model = genai.GenerativeModel("gemini-2.5-flash")
+# Initialize the model with LangChain
+model = init_chat_model(
+    "gemini-2.5-flash",
+    model_provider="google_genai",
+    temperature=0.2
+)
 
 # Flask app
 app = Flask(__name__)
@@ -17,8 +24,8 @@ app = Flask(__name__)
 chat_history = []
 
 def QandA(query):
-    response = model.generate_content(query)
-    return response.text or "Sorry, I could not generate a response."
+    response = model.invoke(query)
+    return response.content or "Sorry, I could not generate a response."
 
 @app.route("/")
 def home():
